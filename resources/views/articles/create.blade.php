@@ -7,6 +7,7 @@
     <div class="col-sm-offset-3 col-sm-6">
         <div class="panel panel-default">
             <div class="panel-heading">Contactez-moi</div>
+            @if(Auth::check())
             <div class="panel-body">
                 {!! Form::open(['route' => 'article.store', 'files' => true, 'method' => 'post', 'class'=>'register-form']) !!}
                 <div class="form-group {!! $errors->has('title') ? 'has-error' : '' !!}">
@@ -25,6 +26,7 @@
                 {!! Form::submit('Envoyer !', ['class' => 'btn btn-info pull-right']) !!}
                 {!! Form::close() !!}
             </div>
+            @endif
         </div>
     </div>
         </div>

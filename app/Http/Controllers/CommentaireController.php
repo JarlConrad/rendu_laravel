@@ -2,22 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Comment;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class CommentaireController extends Controller
 {
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('isAdmin');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        Comment::paginate(5);
     }
 
     /**
@@ -57,8 +46,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
-        return view('users.show', compact('user'));
+        //
     }
 
     /**

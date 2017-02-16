@@ -8,12 +8,12 @@
                     <div class="panel-heading">Dashboard</div>
 
                     <div class="panel-body">
-                        @if(Auth::check())
-                            <h1>MDR t'es bien co ma couille</h1>
+
                             @forelse($articles as $article)
                                 <div>
                                 <h2>{{$article->title}}</h2>
                                 <p>{{$article->content}}</p>
+                                    <a href="{{route('article.show', ['id' => $article->id])}}">Voir l'article</a>
                                 </div><br>
                             @empty
                                 <p>Rien, aucun article n'a été trouvé</p>
@@ -21,9 +21,7 @@
                             <div class="text-center">
                                 {{$articles->links()}}
                             </div>
-                        @else
-                            <p>Alors, on a pas de compte ?</p>
-                        @endif
+
                     </div>
                 </div>
             </div>

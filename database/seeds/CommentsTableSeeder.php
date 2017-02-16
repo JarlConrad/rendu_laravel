@@ -1,17 +1,18 @@
 <?php
 
+use App\Article;
 use App\User;
 use Illuminate\Database\Seeder;
 
-class ArticlesTableSeeder extends Seeder
+class CommentsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      *
-     * @return voidf
+     * @return void
      */
     public function run()
     {
-        factory(App\Article::class, 30)->create();
+        factory(App\Comment::class, 50)->create();
     }
 }

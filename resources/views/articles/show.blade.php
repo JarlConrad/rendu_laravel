@@ -8,8 +8,7 @@
                     <div class="panel-heading">Dashboard</div>
 
                     <div class="panel-body">
-                        @if(Auth::check())
-                            <h1>MDR t'es bien co ma couille</h1>
+
                                 <div>
                                     <h2>{{$article->title}}</h2>
                                     <p>{{$article->content}}</p>
@@ -17,8 +16,10 @@
                                         <h3>Auteur : {{$article->user->name}}</h3>
                                     @endif
                                 </div><br>
-                        @else
-                            <p>Alors, on a pas de compte ?</p>
+                        @if(Auth::check() && Auth::user()->isAdmin == true)
+                            {!! Form::open(['route' => ['article.destroy', $id], 'method' => 'delete']) !!}
+                                {!! Form::submit('Supprimer', ['class' => 'btn btn-danger pull-right']) !!}
+                            {!! Form::close() !!}
                         @endif
                     </div>
                 </div>

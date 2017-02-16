@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\File;
 
 class ArticleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('isAdmin', ['except' => ['index', 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +25,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::paginate(10);;
+        $articles = Article::paginate(10);
         return view('articles.index', compact('articles'));
     }
 
@@ -62,7 +68,7 @@ class ArticleController extends Controller
             $request->file('image_path')->move(base_path() . '/public/images/', $fileName);
         }
 
-        Article::create([
+        $article = Article::create([
             'user_id' => Auth::user()->id,
             'title' => $request->title,
             'image_path' => $fileName,
@@ -71,7 +77,7 @@ class ArticleController extends Controller
 
 
 
-        return redirect()->route('article.index');
+        return redirect()->route('article.show', [$article->id])->with('success', 'Article ajouté');;
     }
 
     /**
@@ -140,7 +146,7 @@ class ArticleController extends Controller
         }
         $article->save();
 
-        return redirect()->route('article.index');
+        return redirect()->route('article.show', [$article->id])->with('success', 'Article modifié');
     }
 
     /**
@@ -151,7 +157,11 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = Article::find($id);
+
+        $article->delete();
+
+        return redirect()->route('article.index')->with('success', 'Article supprimé');
     }
 
 

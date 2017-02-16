@@ -12,6 +12,10 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+use App\Article;
+use App\User;
+
+
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
@@ -28,11 +32,17 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
     $width= rand(500, 800);
     $height= rand(300, 600);
     return [
-        'user_id' => function(){
-            return factory(App\User::class)->create()->id;
-        },
+        'user_id' => User::all()->random()->id,
         'title' => $faker->title,
         'content' => $faker->paragraph,
         'image_path' => $faker->imageUrl($width, $height, 'cats'),
+    ];
+});
+
+$factory->define(App\Comment::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => User::all()->random()->id,
+        'article_id' => Article::all()->random()->id,
+        'comment' => $faker->paragraph,
     ];
 });

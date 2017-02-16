@@ -77,6 +77,11 @@
                 </div>
             </div>
         </nav>
+        @if(session('success') && Auth::check())
+            <div class="alert alert-success">
+                {{session('success')}}
+            </div>
+        @endif
 
         @yield('content')
     </div>
