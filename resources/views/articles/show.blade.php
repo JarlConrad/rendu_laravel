@@ -12,6 +12,7 @@
                                 <div>
                                     <h2>{{$article->title}}</h2>
                                     <p>{{$article->content}}</p>
+                                    <img src="../images/{{$article->image_path}}" alt="">
                                     @if($article->user)
                                         <h3>Auteur : {{$article->user->name}}</h3>
                                     @endif
@@ -24,7 +25,7 @@
 
                         @if(Auth::check())
                             <div class="panel-body">
-                                {!! Form::open(['route' => 'comment.store', 'files' => true, 'method' => 'post', 'class'=>'register-form']) !!}
+                                {!! Form::open(['route' => 'commentaire.store', 'files' => true, 'method' => 'post', 'class'=>'register-form']) !!}
                                 <div class="form-group {!! $errors->has('comment') ? 'has-error' : '' !!}">
                                     {!! Form::textarea('comment', null, ['class' => 'form-control', 'placeholder' => 'Votre commentaire : ']) !!}
                                     {!! $errors->first('comment', '<small class="help-block">:message</small>') !!}
@@ -34,6 +35,7 @@
                                     {!! Form::file('comment_img') !!}
                                     {!! $errors->first('comment_img', '<small class="help-block">:message</small>') !!}
                                 </div>
+                                {{ Form::hidden('article_id', $article->id) }}
                                 {!! Form::submit('Envoyer !', ['class' => 'btn btn-info pull-right']) !!}
                                 {!! Form::close() !!}
                             </div>

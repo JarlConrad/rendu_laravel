@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class CommentaireController extends Controller
 {
@@ -41,7 +43,35 @@ class CommentaireController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $article_id = $request->article_id;
+        $lastComment = Comment::orderBy('id', 'desc')->first();
+        $fileName = null;
+
+        $this->validate($request, [
+            'comment' => 'required|min:5|max:400',
+            'comment_img' => 'mimes:jpeg,jpg,png'
+        ],
+            [
+                'comment.required' => 'Texte obligatoire pour publier un commentaire',
+                'comment_img' => 'Seulement du jpeg,jpg et png'
+            ]);
+
+        if($request->hasFile('comment_img')) {
+            $newCommentId = $lastComment->id+1;
+            $fileName = $newCommentId.'.'.$request->file('comment_img')->getClientOriginalExtension();
+            $request->file('comment_img')->move(base_path() . '/public/images/comments', $fileName);
+        }
+
+        $comment = Comment::create([
+            'user_id' => Auth::user()->id,
+            'article_id'=> $article_id,
+            'comment' => $request->comment,
+            'comment_img' => $fileName
+        ]);
+
+
+
+        return redirect()->route('article.show', [$article_id])->with('success', 'Commentaire ajouté');
     }
 
     /**

@@ -65,7 +65,7 @@ class ArticleController extends Controller
         if($request->hasFile('image_path')) {
             $newArticleId = $lastArticle->id+1;
             $fileName = $newArticleId.'.'.$request->file('image_path')->getClientOriginalExtension();
-            $request->file('image_path')->move(base_path() . '/public/images/', $fileName);
+            $request->file('image_path')->move(base_path() . '/public/images/articles', $fileName);
         }
 
         $article = Article::create([
@@ -77,7 +77,7 @@ class ArticleController extends Controller
 
 
 
-        return redirect()->route('article.show', [$article->id])->with('success', 'Article ajouté');;
+        return redirect()->route('article.show', [$article->id])->with('success', 'Article ajouté');
     }
 
     /**
