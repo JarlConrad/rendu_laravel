@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class CommentaireController extends Controller
 {
+
+    public function __construct()
+    {
+        //$this->middleware('isAdmin', ['except' => ['index', 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
