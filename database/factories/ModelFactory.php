@@ -40,9 +40,12 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Comment::class, function (Faker\Generator $faker) {
+    $width= rand(100, 800);
+    $height= rand(100, 800);
     return [
         'user_id' => User::all()->random()->id,
         'article_id' => Article::all()->random()->id,
         'comment' => $faker->paragraph,
+        'comment_img' => $faker->imageUrl($width, $height, 'cats'),
     ];
 });

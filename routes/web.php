@@ -23,5 +23,7 @@ Route::resource('/article', 'ArticleController');
 
 Route::resource('/user', 'UserController');
 
+Route::resource('/comment', 'CommentController');
+
 Route::get('/home', 'HomeController@index');
 

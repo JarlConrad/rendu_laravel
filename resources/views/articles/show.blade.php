@@ -21,6 +21,32 @@
                                 {!! Form::submit('Supprimer', ['class' => 'btn btn-danger pull-right']) !!}
                             {!! Form::close() !!}
                         @endif
+
+                        @if(Auth::check())
+                            <div class="panel-body">
+                                {!! Form::open(['route' => 'comment.store', 'files' => true, 'method' => 'post', 'class'=>'register-form']) !!}
+                                <div class="form-group {!! $errors->has('comment') ? 'has-error' : '' !!}">
+                                    {!! Form::textarea('comment', null, ['class' => 'form-control', 'placeholder' => 'Votre commentaire : ']) !!}
+                                    {!! $errors->first('comment', '<small class="help-block">:message</small>') !!}
+                                </div>
+                                <div class="form-group {!! $errors->has('comment_img') ? 'has-error' : '' !!}">
+                                    {!! Form::label('comment_img', 'Illustration du commentaire : ') !!}
+                                    {!! Form::file('comment_img') !!}
+                                    {!! $errors->first('comment_img', '<small class="help-block">:message</small>') !!}
+                                </div>
+                                {!! Form::submit('Envoyer !', ['class' => 'btn btn-info pull-right']) !!}
+                                {!! Form::close() !!}
+                            </div>
+                        @else
+                            <p>Vous devez être connécté pour écrire un commentaire</p>
+                        @endif
+
+                        @forelse($article->comments as $comment)
+                            <h4>{{$comment->user->name}}</h4>
+                            <p>{{$comment->comment}}</p><br>
+                        @empty
+                            Rien
+                        @endforelse
                     </div>
                 </div>
             </div>

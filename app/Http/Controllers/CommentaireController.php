@@ -14,7 +14,7 @@ class CommentaireController extends Controller
      */
     public function index()
     {
-        Comment::paginate(5);
+        Comment::paginate(10);
     }
 
     /**
