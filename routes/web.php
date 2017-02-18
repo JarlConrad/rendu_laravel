@@ -21,6 +21,8 @@ Auth::routes();
 
 Route::resource('/article', 'ArticleController');
 
+Route::resource('/contact', 'ContactController');
+
 Route::resource('/user', 'UserController');
 
 Route::resource('/like', 'LikeController');

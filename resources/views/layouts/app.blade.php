@@ -48,6 +48,9 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
+                        @if (Auth::check())
+                            <li><a href="contact">Contact</a></li>
+                        @endif
                         @if (Auth::check() && Auth::user()->isAdmin == "1")
                             <li><a href="admin">Administration</a></li>
                         @endif
