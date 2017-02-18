@@ -8,7 +8,7 @@
                     <div class="panel-heading">Dashboard</div>
 
                     <div class="panel-body">
-
+                            <!-- Affichage de l'article -->
                                 <div>
                                     <h2>{{$article->title}}</h2>
                                     <p>{{$article->content}}</p>
@@ -17,23 +17,36 @@
                                         <h3>Auteur : {{$article->user->name}}</h3>
                                     @endif
                                 </div><br>
-                        @if(Auth::check() && Auth::user()->isAdmin == true)
+
+
+                        <!-- Supression de l'article (Si co et apartient) -->
+
+                        @if(Auth::check() && (Auth::user()->id == $article->user_id || Auth::user()->isAdmin == true))
                             {!! Form::open(['route' => ['article.destroy', $id], 'method' => 'delete']) !!}
                                 {!! Form::submit('Supprimer', ['class' => 'btn btn-danger pull-right']) !!}
                             {!! Form::close() !!}
                         @endif
 
+
+                    <!-- Like de l'article (Si co) -->
                         @if(Auth::check())
                             <div class="panel-body">
+                                @forelse($article->likes as $like)
+                                    {{$loop->count}}
+                                @empty
+                                    Pas de J'aime
+                                @endforelse
                                 {!! Form::open(['route' => 'like.store', 'method' => 'post', 'class'=>'register-form']) !!}
-                                {{ Form::hidden('article_id', $article->id) }}
-                                {!! Form::submit('Envoyer !', ['class' => 'btn btn-info pull-right']) !!}
+                                    {{ Form::hidden('article_id', $article->id) }}
+                                    {!! Form::submit('Envoyer !', ['class' => 'btn btn-info pull-right']) !!}
                                 {!! Form::close() !!}
                             </div>
                         @else
                             <p>Vous devez être connécté pour aimer</p>
                         @endif
 
+
+                    <!-- Création commentaire de l'article (Si co) -->
                         @if(Auth::check())
                             <div class="panel-body">
                                 {!! Form::open(['route' => 'commentaire.store', 'files' => true, 'method' => 'post', 'class'=>'register-form']) !!}
@@ -53,6 +66,8 @@
                         @else
                             <p>Vous devez être connécté pour écrire un commentaire</p>
                         @endif
+
+                    <!--Liste de commentaire -->
 
                         @forelse($article->comments as $comment)
                             <h4>{{$comment->user->name}}</h4>

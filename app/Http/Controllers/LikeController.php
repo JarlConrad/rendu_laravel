@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Like;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
@@ -36,19 +38,9 @@ class LikeController extends Controller
     {
         $article_id = $request->article_id;
 
-        $this->validate($request, [
-            'comment' => 'required|min:5|max:400',
-            'comment_img' => 'mimes:jpeg,jpg,png'
-        ],
-            [
-                'comment.required' => 'Texte obligatoire pour publier un commentaire',
-                'comment_img' => 'Seulement du jpeg,jpg et png'
-            ]);
-
-
         Like::create([
             'user_id' => Auth::user()->id,
-            'article_id'=> $article_id,
+            'article_id'=> $article_id
         ]);
 
 
@@ -99,10 +91,10 @@ class LikeController extends Controller
     public function destroy($id)
     {
         $like = Like::find($id);
-        $article_id = $comment->article_id;
+        $article_id = $like->article_id;
 
-        $comment->delete();
+        $like->delete();
 
-        return redirect()->route('article.show', [$article_id])->with('success', 'Commentaire supprimé');
+        return redirect()->route('article.show', [$article_id])->with('success', 'Vous n\'aimez plus cette article');
     }
 }
