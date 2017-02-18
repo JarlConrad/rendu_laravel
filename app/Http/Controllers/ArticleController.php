@@ -15,7 +15,7 @@ class ArticleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('isAdmin', ['except' => ['index', 'show']]);
+        //$this->middleware('isAdmin', ['except' => ['index', 'show', 'create', 'edit', 'delete']]);
     }
 
     /**
@@ -146,9 +146,9 @@ class ArticleController extends Controller
         $article->content = $request->content;
         if($request->hasFile('image_path')) {
             $actuImg = $article->image_path;
-            File::delete('/images/'.$actuImg);
+            File::delete('/images/articles/'.$actuImg);
             $fileName = $id.'.'.$request->file('image_path')->getClientOriginalExtension();
-            $request->file('image_path')->move(base_path() . '/public/images/', $fileName);
+            $request->file('image_path')->move(base_path() . '/public/images/articles', $fileName);
         }
         $article->save();
 

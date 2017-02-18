@@ -49,3 +49,10 @@ $factory->define(App\Comment::class, function (Faker\Generator $faker) {
         'comment_img' => $faker->imageUrl($width, $height, 'cats'),
     ];
 });
+
+$factory->define(App\Like::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => User::all()->random()->id,
+        'article_id' => Article::all()->random()->id,
+    ];
+});
