@@ -9,10 +9,8 @@
                     <div class="panel-heading">Dashboard</div>
 
                     <div class="panel-body">
-<<<<<<< HEAD
-=======
                             <!-- Affichage de l'article -->
->>>>>>> 073f18b76d7362bd0f872200482b3845412fb15e
+
                                 <div>
                                     <h2>{{$article->title}}</h2>
                                     <p>{{$article->content}}</p>

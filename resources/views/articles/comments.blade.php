@@ -13,7 +13,7 @@
                             <h4>{{$comment->user->name}}</h4>
                             <p>{{$comment->comment}}</p><br>
                         @empty
-                            Rien
+                            Aucun commetaires
                         @endforelse
                     </div>
                 </div>

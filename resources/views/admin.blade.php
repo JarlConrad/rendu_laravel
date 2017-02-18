@@ -17,10 +17,8 @@
                                     {!! Form::close() !!} Voir les commentaires</a>
                             </div><br>
                             @include('components.share', [
-                                  'url' => $url,
-                                  'description' => 'Partagez !',
-                                  'image' => 'http://placehold.it/300x300?text=Cool+link'
-                                 ])
+                                     'url' => request()->fullUrl(),
+                                    ])
                         @empty
                             <p>Rien, aucun article n'a été trouvé</p>
                         @endforelse
