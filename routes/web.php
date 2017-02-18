@@ -23,7 +23,7 @@ Route::resource('/article', 'ArticleController');
 
 Route::resource('/user', 'UserController');
 
-Route::resource('/like', 'UserController');
+Route::resource('/like', 'LikeController');
 
 Route::resource('/commentaire', 'CommentaireController');
 

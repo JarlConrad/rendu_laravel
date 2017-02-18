@@ -45,7 +45,7 @@ class LikeController extends Controller
 
 
 
-        return redirect()->route('article.show', [$article_id])->with('success', 'Commentaire ajouté');
+        return redirect()->route('article.show', [$article_id])->with('success', 'Vous aimez l\'article');
     }
 
     /**
@@ -56,7 +56,21 @@ class LikeController extends Controller
      */
     public function show($id)
     {
-        //
+        $article = Article::find($id);
+        $a_aime= false;
+
+        if(!$article) {
+            return redirect()->route('article.index');
+        }
+
+        foreach($article->likes as $like) {
+            if($like->user_id == Auth::user()->id){
+                $a_aime=true;
+            }
+        }
+
+        return view('articles.show', compact('a_aime'));
+
     }
 
     /**

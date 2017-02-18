@@ -35,17 +35,30 @@
 
 
                     <!-- Like de l'article (Si co) -->
-                        @if(Auth::check())
-                            <div class="panel-body">
-                                @forelse($article->likes as $like)
+                        <div class="panel-body">
+                            @forelse($article->likes as $like)
+                                @if($loop->last)
                                     {{$loop->count}}
-                                @empty
-                                    Pas de J'aime
-                                @endforelse
-                                {!! Form::open(['route' => 'like.store', 'method' => 'post', 'class'=>'register-form']) !!}
-                                    {{ Form::hidden('article_id', $article->id) }}
-                                    {!! Form::submit('Envoyer !', ['class' => 'btn btn-info pull-right']) !!}
-                                {!! Form::close() !!}
+                                @endif
+                            @empty
+                                Pas de J'aime
+                            @endforelse
+
+                        @if(Auth::check())
+
+
+                                @if($a_aime == true)
+                                        {!! Form::open(['route' => ['like.destroy', $le_like], 'method' => 'delete']) !!}
+                                            {{ Form::hidden('article_id', $article->id) }}
+                                            {!! Form::submit('Je n\'aime plus', ['class' => 'btn btn-info pull-right']) !!}
+                                        {!! Form::close() !!}
+                                @else
+                                        {!! Form::open(['route' => 'like.store', 'method' => 'post', 'class'=>'register-form']) !!}
+                                            {{ Form::hidden('article_id', $article->id) }}
+                                            {!! Form::submit('J\'aime', ['class' => 'btn btn-info pull-right']) !!}
+                                        {!! Form::close() !!}
+                                @endif
+
                             </div>
                         @else
                             <p>Vous devez être connécté pour aimer</p>
@@ -78,7 +91,7 @@
                         @forelse($article->comments as $comment)
                             <h4>{{$comment->user->name}}</h4>
                             <p>{{$comment->comment}}</p><br>
-                            @if($comment->user_id == Auth::user()->id)
+                            @if(Auth::check() && $comment->user_id == Auth::user()->id)
                             {!! Form::open(['route' => ['commentaire.edit', $comment->id], 'method' => 'get']) !!}
                                 {!! Form::submit('Editer', ['class' => 'btn btn-info pull-right']) !!}
                             {!! Form::close() !!}

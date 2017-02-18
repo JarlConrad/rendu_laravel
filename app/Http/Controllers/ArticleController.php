@@ -15,7 +15,7 @@ class ArticleController extends Controller
 
     public function __construct()
     {
-        //$this->middleware('isAdmin', ['except' => ['index', 'show', 'create', 'edit', 'delete']]);
+        $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
     /**
@@ -94,13 +94,27 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
+
         $article = Article::find($id);
+
+
+        $a_aime= false;
+        $le_like= null;
 
         if(!$article) {
             return redirect()->route('article.index');
         }
 
-        return view('articles.show', compact('article', 'id'));
+
+        foreach($article->likes as $like) {
+            if($like->user_id == Auth::user()->id){
+                $a_aime=true;
+                $le_like=$like->id;
+            }
+        }
+
+
+        return view('articles.show', compact('article', 'id', 'a_aime', 'le_like'));
     }
 
     /**
