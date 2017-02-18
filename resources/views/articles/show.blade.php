@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 @extends('layouts.app')
 
 @section('content')
@@ -8,14 +9,17 @@
                     <div class="panel-heading">Dashboard</div>
 
                     <div class="panel-body">
-
                                 <div>
                                     <h2>{{$article->title}}</h2>
                                     <p>{{$article->content}}</p>
                                     <img src="../images/{{$article->image_path}}" alt="">
                                     @if($article->user)
                                         <h3>Auteur : {{$article->user->name}}</h3>
+                                        <h4>Partage :</h4>
                                     @endif
+                                    @include('components.share', [
+                                    'url' => request()->fullUrl(),
+                                   ])
                                 </div><br>
                         @if(Auth::check() && Auth::user()->isAdmin == true)
                             {!! Form::open(['route' => ['article.destroy', $id], 'method' => 'delete']) !!}

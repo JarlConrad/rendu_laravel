@@ -27,3 +27,7 @@ Route::resource('/commentaire', 'CommentaireController');
 
 Route::get('/home', 'HomeController@index');
 
+Route::get('/admin', 'ArticleController@indexAdmin');
+
+
+

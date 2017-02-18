@@ -29,6 +29,12 @@ class ArticleController extends Controller
         return view('articles.index', compact('articles'));
     }
 
+    public function indexAdmin()
+    {
+        $articles = Article::paginate(5);
+        return view('admin', compact('articles'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
