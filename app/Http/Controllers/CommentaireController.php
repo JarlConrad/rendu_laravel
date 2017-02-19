@@ -113,6 +113,7 @@ class CommentaireController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $fileName = null;
         $this->validate($request, [
             'comment' => 'required|min:5|max:400',
             'comment_img' => 'mimes:jpeg,jpg,png'
@@ -130,6 +131,9 @@ class CommentaireController extends Controller
             $fileName = $id.'.'.$request->file('comment_img')->getClientOriginalExtension();
             $request->file('comment_img')->move(base_path() . '/public/images/comments', $fileName);
         }
+        if($fileName != null){
+            $comment->comment_img = $fileName;
+        }
         $comment->save();
         $article = $comment->article_id;
 
@@ -144,11 +148,15 @@ class CommentaireController extends Controller
      */
     public function destroy($id)
     {
+        $article_id = null;
         $comment = Comment::find($id);
         $article_id = $comment->article_id;
+
 
         $comment->delete();
 
         return redirect()->route('article.show', [$article_id])->with('success', 'Commentaire supprimé');
+
+
     }
 }

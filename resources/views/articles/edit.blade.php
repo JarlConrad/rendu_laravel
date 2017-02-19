@@ -6,7 +6,7 @@
 
             <div class="col-sm-offset-3 col-sm-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Contactez-moi</div>
+                    <div class="panel-heading"><a href="{{ route('article.index') }}">Retour</a></div>
                     @if(Auth::check())
                     <div class="panel-body">
                         {!! Form::open(['route' => ['article.update', $id], 'files' => true, 'method' => 'put', 'class'=>'register-form']) !!}
@@ -21,13 +21,15 @@
                         <div class="form-group {!! $errors->has('image_path') ? 'has-error' : '' !!}">
                             {!! Form::label('image_path', 'Illustration de l\'article : ') !!}
                             {!! Form::file('image_path') !!}
-                            <img src="{{ asset('/images/'.$article->image_path) }}" alt="">
+                            @if($article->image_path != null)
+                                <img class="img_article" src="{{ asset('../images/articles/'.$article->image_path) }}" alt="">
+                            @endif
                             {!! $errors->first('image_path', '<small class="help-block">:message</small>') !!}
                         </div>
                         {!! Form::submit('Envoyer !', ['class' => 'btn btn-info pull-right']) !!}
                         {!! Form::close() !!}
-                    </div>
-                    @endif
+                        </div>
+                        @endif
                 </div>
             </div>
         </div>

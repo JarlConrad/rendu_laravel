@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('article.index');
 });
 
 
@@ -31,7 +31,7 @@ Route::resource('/commentaire', 'CommentaireController');
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('/admin', 'ArticleController@indexAdmin');
+Route::resource('/admin', 'AdminController');
 
 
 

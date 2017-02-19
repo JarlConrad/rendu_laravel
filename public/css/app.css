@@ -8327,8 +8327,26 @@ button.close {
   text-overflow: ellipsis;
 }
 
+.img_article {
+  width: 100%;
+}
+
+.boutons {
+  margin-top: 20px;
+  padding-left: 0;
+}
+
+.boutons li {
+  display: inline-block;
+}
+
+.button_de_co {
+  font-size: 8px;
+  padding: 5px;
+}
+
 .un_article .zone_like {
-  padding-top: 5px;
+  padding-top: 4px;
 }
 
 .un_article .zone_like .likes {
@@ -8336,10 +8354,6 @@ button.close {
   padding-top: 8px;
 }
 
-.un_article .img_article {
+.un_commentaire .img_comment {
   width: 100%;
-}
-
-.un_article .delete_button {
-  margin: 20px 0;
 }

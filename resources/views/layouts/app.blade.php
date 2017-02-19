@@ -12,12 +12,22 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
         ]) !!};
+
+        $('#myTabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
     </script>
 </head>
 <body>
@@ -48,15 +58,19 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                        @if (Auth::check())
-                            <li><a href="{{ route('contact.create') }}">Contact</a></li>
-                        @endif
                         @if (Auth::check() && Auth::user()->isAdmin == true)
-                                <li><a href="{{ route('contact.index') }}">Message</a></li>
-                                <li><a href="admin">Administration</a></li>
+                            <li><a href="{{ route('article.index') }}">Les articles</a></li>
+                            <li><a href="{{ route('article.create') }}">Crée un article</a></li>
+                            <li><a href="{{ route('contact.index') }}">Messagerie contact</a></li>
+                            <li><a href="{{ route('admin.index') }}">Administration</a></li>
+                        @elseif (Auth::check() )
+                            <li><a href="{{ route('article.index') }}">Les articles</a></li>
+                            <li><a href="{{ route('article.create') }}">Crée un article</a></li>
+                            <li><a href="{{ route('contact.create') }}">Contact</a></li>
                         @endif
                         <!-- Authentication Links -->
                         @if (Auth::guest())
+                                <li><a href="{{ route('article.index') }}">Les articles</a></li>
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
@@ -76,6 +90,11 @@
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('user.show', Auth::user()->id)}}">
+                                            Votre compte
+                                        </a>
                                     </li>
                                 </ul>
                             </li>

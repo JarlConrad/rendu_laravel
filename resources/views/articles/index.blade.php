@@ -14,7 +14,6 @@
 
                                 <div class="col-sm-6 col-md-4 article">
                                     <div class="thumbnail">
-                                        <img src="{{$article->image_path}}">
                                         <div class="caption">
                                             <h3>{{$article->title}}</h3>
                                             <p class="txt">{{$article->content}}</p>

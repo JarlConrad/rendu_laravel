@@ -16,6 +16,22 @@
     text-overflow: ellipsis;
   }
 }
+.img_article{
+  width: 100%;
+}
+
+.boutons{
+  margin-top: 20px;
+  padding-left: 0;
+  li{
+    display: inline-block;
+  }
+}
+
+.button_de_co{
+  font-size: 8px;
+  padding: 5px;
+}
 
 .un_article{
   .zone_like{
@@ -25,10 +41,11 @@
       padding-top: 8px;
     }
   }
-  .img_article{
+
+}
+
+.un_commentaire{
+  .img_comment{
     width: 100%;
-  }
-  .delete_button{
-    margin: 20px 0;
   }
 }

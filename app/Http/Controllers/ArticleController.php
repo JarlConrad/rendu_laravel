@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 
 
+use App\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -144,6 +145,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $fileName = null;
         $this->validate($request, [
             'title' => 'required|min:5|max:30',
             'content' => 'required',
@@ -164,6 +166,9 @@ class ArticleController extends Controller
             $fileName = $id.'.'.$request->file('image_path')->getClientOriginalExtension();
             $request->file('image_path')->move(base_path() . '/public/images/articles', $fileName);
         }
+        if($fileName != null){
+            $article->image_path = $fileName;
+        }
         $article->save();
 
         return redirect()->route('article.show', [$article->id])->with('success', 'Article modifié');
@@ -178,7 +183,12 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::find($id);
-
+        foreach($article->likes as $like) {
+            $like->delete();
+        }
+        foreach($article->comments as $comment) {
+            $comment->delete();
+        }
         $article->delete();
 
         return redirect()->route('article.index')->with('success', 'Article supprimé');
