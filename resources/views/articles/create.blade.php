@@ -6,7 +6,7 @@
 
     <div class="col-sm-offset-3 col-sm-6">
         <div class="panel panel-default">
-            <div class="panel-heading">Contactez-moi</div>
+            <div class="panel-heading"><a href="{{ route('article.index') }}">Retour</a></div>
             @if(Auth::check())
             <div class="panel-body">
                 {!! Form::open(['route' => 'article.store', 'files' => true, 'method' => 'post', 'class'=>'register-form']) !!}
