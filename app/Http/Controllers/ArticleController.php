@@ -25,7 +25,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::paginate(10);
+        $articles = Article::paginate(12);
         return view('articles.index', compact('articles'));
     }
 
@@ -107,7 +107,7 @@ class ArticleController extends Controller
 
 
         foreach($article->likes as $like) {
-            if($like->user_id == Auth::user()->id){
+            if(Auth::check() && $like->user_id == Auth::user()->id){
                 $a_aime=true;
                 $le_like=$like->id;
             }
@@ -160,7 +160,7 @@ class ArticleController extends Controller
         $article->content = $request->content;
         if($request->hasFile('image_path')) {
             $actuImg = $article->image_path;
-            File::delete('/images/articles/'.$actuImg);
+            File::delete('/public/images/articles/'.$actuImg);
             $fileName = $id.'.'.$request->file('image_path')->getClientOriginalExtension();
             $request->file('image_path')->move(base_path() . '/public/images/articles', $fileName);
         }

@@ -126,7 +126,7 @@ class CommentaireController extends Controller
         $comment->comment = $request->comment;
         if($request->hasFile('comment_img')) {
             $actuImg = $comment->comment_img;
-            File::delete('/images/comments/'.$actuImg);
+            File::delete('/public/images/comments/'.$actuImg);
             $fileName = $id.'.'.$request->file('comment_img')->getClientOriginalExtension();
             $request->file('comment_img')->move(base_path() . '/public/images/comments', $fileName);
         }

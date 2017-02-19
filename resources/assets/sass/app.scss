@@ -7,3 +7,28 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.caption{
+  height: 200px;
+  .txt{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.un_article{
+  .zone_like{
+    padding-top: 4px;
+    .likes{
+      text-align: center;
+      padding-top: 8px;
+    }
+  }
+  .img_article{
+    width: 100%;
+  }
+  .delete_button{
+    margin: 20px 0;
+  }
+}

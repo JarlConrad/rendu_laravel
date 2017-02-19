@@ -2,67 +2,124 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container un_article">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Dashboard</div>
-
+                    <div class="panel-heading"><a href="{{ route('article.index') }}">Retour</a></div>
                     <div class="panel-body">
                             <!-- Affichage de l'article -->
 
                                 <div>
-                                    <h2>{{$article->title}}</h2>
-                                    <p>{{$article->content}}</p>
-                                    <img src="../images/{{$article->image_path}}" alt="">
-                                    @if($article->user)
-                                        <h3>Auteur : {{$article->user->name}}</h3>
-                                        <h4>Partage :</h4>
+                                    @if($article->image_path != null)
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <h2>{{$article->title}}</h2>
+                                                <p>{{$article->content}}</p>
+                                                <h3>Auteur : {{$article->user->name}}</h3>
+                                                <div class="row">
+                                                    <div class="col-xs-4">
+                                                        <h4>Partage :</h4>
+                                                        @include('components.share', [
+                                                        'url' => request()->fullUrl(),
+                                                       ])
+                                                    </div>
+                                                    <div class="col-xs-8 zone_like">
+                                                        @forelse($article->likes as $like)
+                                                            @if($loop->last)
+                                                                <div class="col-md-6 likes">{{$loop->count}} J'aimes</div>
+                                                            @endif
+                                                        @empty
+                                                            <div class="col-md-6 likes">Aucun J'aimes</div>
+                                                        @endforelse
+
+                                                        @if(Auth::check())
+
+
+                                                            @if($a_aime == true)
+                                                                {!! Form::open(['route' => ['like.destroy', $le_like], 'method' => 'delete']) !!}
+                                                                {{ Form::hidden('article_id', $article->id) }}
+                                                                {!! Form::submit('Je n\'aime plus', ['class' => 'btn btn-info pull-right col-md-6']) !!}
+                                                                {!! Form::close() !!}
+                                                            @else
+                                                                {!! Form::open(['route' => 'like.store', 'method' => 'post', 'class'=>'register-form']) !!}
+                                                                {{ Form::hidden('article_id', $article->id) }}
+                                                                {!! Form::submit('J\'aime', ['class' => 'btn btn-info pull-right col-md-6']) !!}
+                                                                {!! Form::close() !!}
+                                                            @endif
+
+
+                                                        @else
+                                                            <p>Vous devez être connécté pour aimer</p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <img class="img_article" src="../images/articles/{{$article->image_path}}" alt="">
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="row">
+                                            <div class="col-xs-12 ss_img_art">
+                                                <h2>{{$article->title}}</h2>
+                                                <p>{{$article->content}}</p>
+                                                <h3>Auteur : {{$article->user->name}}</h3>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <h4>Partage :</h4>
+                                                        @include('components.share', [
+                                                        'url' => request()->fullUrl(),
+                                                       ])
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        @forelse($article->likes as $like)
+                                                            @if($loop->last)
+                                                                {{$loop->count}}
+                                                            @endif
+                                                        @empty
+                                                            Pas de J'aime
+                                                        @endforelse
+
+                                                        @if(Auth::check())
+
+
+                                                            @if($a_aime == true)
+                                                                {!! Form::open(['route' => ['like.destroy', $le_like], 'method' => 'delete']) !!}
+                                                                {{ Form::hidden('article_id', $article->id) }}
+                                                                {!! Form::submit('Je n\'aime plus', ['class' => 'btn btn-info pull-right']) !!}
+                                                                {!! Form::close() !!}
+                                                            @else
+                                                                {!! Form::open(['route' => 'like.store', 'method' => 'post', 'class'=>'register-form']) !!}
+                                                                {{ Form::hidden('article_id', $article->id) }}
+                                                                {!! Form::submit('J\'aime', ['class' => 'btn btn-info pull-right']) !!}
+                                                                {!! Form::close() !!}
+                                                            @endif
+
+
+                                                        @else
+                                                            <p>Vous devez être connécté pour aimer</p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     @endif
-                                    @include('components.share', [
-                                    'url' => request()->fullUrl(),
-                                   ])
+
                                 </div><br>
+
 
 
                         <!-- Supression de l'article (Si co et apartient) -->
 
                         @if(Auth::check() && (Auth::user()->id == $article->user_id || Auth::user()->isAdmin == true))
                             {!! Form::open(['route' => ['article.destroy', $id], 'method' => 'delete']) !!}
-                                {!! Form::submit('Supprimer', ['class' => 'btn btn-danger pull-right']) !!}
+                                {!! Form::submit('Supprimer cette article', ['class' => 'btn btn-danger pull-right delete_button']) !!}
                             {!! Form::close() !!}
                         @endif
 
 
-                    <!-- Like de l'article (Si co) -->
-                        <div class="panel-body">
-                            @forelse($article->likes as $like)
-                                @if($loop->last)
-                                    {{$loop->count}}
-                                @endif
-                            @empty
-                                Pas de J'aime
-                            @endforelse
-
-                        @if(Auth::check())
-
-
-                                @if($a_aime == true)
-                                        {!! Form::open(['route' => ['like.destroy', $le_like], 'method' => 'delete']) !!}
-                                            {{ Form::hidden('article_id', $article->id) }}
-                                            {!! Form::submit('Je n\'aime plus', ['class' => 'btn btn-info pull-right']) !!}
-                                        {!! Form::close() !!}
-                                @else
-                                        {!! Form::open(['route' => 'like.store', 'method' => 'post', 'class'=>'register-form']) !!}
-                                            {{ Form::hidden('article_id', $article->id) }}
-                                            {!! Form::submit('J\'aime', ['class' => 'btn btn-info pull-right']) !!}
-                                        {!! Form::close() !!}
-                                @endif
-
-                            </div>
-                        @else
-                            <p>Vous devez être connécté pour aimer</p>
-                        @endif
 
 
                     <!-- Création commentaire de l'article (Si co) -->
@@ -89,18 +146,29 @@
                     <!--Liste de commentaire -->
 
                         @forelse($article->comments as $comment)
-                            <h4>{{$comment->user->name}}</h4>
-                            <p>{{$comment->comment}}</p><br>
-                            @if(Auth::check() && $comment->user_id == Auth::user()->id)
-                            {!! Form::open(['route' => ['commentaire.edit', $comment->id], 'method' => 'get']) !!}
-                                {!! Form::submit('Editer', ['class' => 'btn btn-info pull-right']) !!}
-                            {!! Form::close() !!}
-                                {!! Form::open(['route' => ['commentaire.destroy', $comment->id], 'method' => 'delete']) !!}
-                                    {!! Form::submit('Supprimer', ['class' => 'btn btn-info pull-right']) !!}
-                                {!! Form::close() !!}
-                            @endif
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h4>{{$comment->user->name}}</h4>
+                                    <p>{{$comment->comment}}</p><br>
+                                </div>
+                                <div class="col-xs-3">
+                                    <img class="img_comment" src="../images/comments/{{$comment->comment_img}}" alt="">
+                                </div>
+                                <div class="col-xs-3">
+                                    @if(Auth::check() && $comment->user_id == Auth::user()->id)
+                                        {!! Form::open(['route' => ['commentaire.edit', $comment->id], 'method' => 'get']) !!}
+                                            {!! Form::submit('Editer', ['class' => 'btn btn-info pull-right']) !!}
+                                        {!! Form::close() !!}
+                                        {!! Form::open(['route' => ['commentaire.destroy', $comment->id], 'method' => 'delete']) !!}
+                                            {!! Form::submit('Supprimer', ['class' => 'btn btn-danger pull-right']) !!}
+                                        {!! Form::close() !!}
+                                    @endif
+                                </div>
+                            </div>
+
+
                         @empty
-                            Rien
+                            <p>Aucun commentaire</p>
                         @endforelse
                     </div>
                 </div>

@@ -22,7 +22,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
 
@@ -49,10 +49,11 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         @if (Auth::check())
-                            <li><a href="contact">Contact</a></li>
+                            <li><a href="{{ route('contact.create') }}">Contact</a></li>
                         @endif
-                        @if (Auth::check() && Auth::user()->isAdmin == "1")
-                            <li><a href="admin">Administration</a></li>
+                        @if (Auth::check() && Auth::user()->isAdmin == true)
+                                <li><a href="{{ route('contact.index') }}">Message</a></li>
+                                <li><a href="admin">Administration</a></li>
                         @endif
                         <!-- Authentication Links -->
                         @if (Auth::guest())

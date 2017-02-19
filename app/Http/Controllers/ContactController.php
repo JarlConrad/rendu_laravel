@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use Illuminate\Http\Request;
-use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -13,9 +13,18 @@ class ContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('isAdmin', ['except' => ['create']]);
+    }
+
+
     public function index()
     {
-        return view('contact');
+        $contacts = Contact::paginate(10);
+        return view('contacts.index', compact('contacts'));
     }
 
     /**
@@ -25,7 +34,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        return view('contact');
+        return view('contacts.create');
     }
 
     /**
@@ -37,14 +46,11 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
             'message' => 'required'
         ]);
 
         Contact::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'user_id' => $request->user_id,
             'message' => $request->message
 
         ]);
@@ -96,6 +102,10 @@ class ContactController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $contact = Contact::find($id);
+
+        $contact->delete();
+
+        return redirect()->route('contact.index')->with('success', 'Message supprimé');
     }
 }

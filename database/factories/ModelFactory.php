@@ -29,24 +29,21 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Article::class, function (Faker\Generator $faker) {
 
-    $width= rand(500, 800);
-    $height= rand(300, 600);
     return [
         'user_id' => User::all()->random()->id,
-        'title' => $faker->title,
+        'title' => $faker->sentence($nbWords = 4),
         'content' => $faker->paragraph,
-        'image_path' => $faker->imageUrl($width, $height, 'cats'),
+        'image_path' => null,
     ];
 });
 
 $factory->define(App\Comment::class, function (Faker\Generator $faker) {
-    $width= rand(100, 800);
-    $height= rand(100, 800);
+
     return [
         'user_id' => User::all()->random()->id,
         'article_id' => Article::all()->random()->id,
         'comment' => $faker->paragraph,
-        'comment_img' => $faker->imageUrl($width, $height, 'cats'),
+        'comment_img' => null,
     ];
 });
 
@@ -54,5 +51,12 @@ $factory->define(App\Like::class, function (Faker\Generator $faker) {
     return [
         'user_id' => User::all()->random()->id,
         'article_id' => Article::all()->random()->id,
+    ];
+});
+
+$factory->define(App\Contact::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => User::all()->random()->id,
+        'message' => $faker->paragraph,
     ];
 });
